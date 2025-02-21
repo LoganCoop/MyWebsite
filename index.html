@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Hello Welcome to my Resume Website!</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css">
         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     </head>
     <body>
@@ -53,8 +54,8 @@
                     <div class="columns is-vcentered">
                         <div class="column">
                             <h1 class="title">Logan P Cooper</h1>
-                            <p class="subtitle">Software Developer and CAD Designer</p>
-                            <p class="subtitle">Website coded by my self in HTML and using Bulma CSS</p>
+                            <p class="subtitle is-4">Software Developer and CAD Designer</p>
+                            <p class="subtitle is-6">Website coded by my self in HTML and using Bulma CSS</p>
                         </div>
                         <div class="column is-narrow">
                             <figure class="image is-128x128">
@@ -71,7 +72,320 @@
             <div class="container">
                 <h2 class="title is-2">About Me</h2>
                 <div class="content">
-                    <p>I'm a dedicated software developer with a strong background in web development and problem-solving. My professional experience spans technology production, quality control, and repair, gained from the medical technology industry. Currently I am working as a PRA2 at Mills-Norrie within the New York State Parks, leveraging technical skills to enhance park operations. Along with working for NYS Parks I am a full-time student at SUNY New Paltz, completing my senior year in Computer Science where I will graduate in December 2025. This professional and academic journey has fostered a diverse skill set and a passion for technological innovation and maintenance.</p>
+                    <p>Hi there! I'm a passionate software developer with a knack for web development and problem-solving. My journey has taken me through technology production, quality control, and repair within the medical technology industry, shaping a well-rounded skill set.
+
+                        Currently, I have the pleasure of working as a PRA2 at Mills-Norrie within New York State Parks. There, I use my technical skills to enhance park operations and contribute to the smooth functioning of Mills-Norrie State Parks.
+                        
+                        In addition to my work at NYS Parks, I'm a full-time student at SUNY New Paltz, where I'm completing my senior year in Computer Science and set to graduate in December 2025. This dual pursuit of professional and academic excellence has nurtured a diverse skill set and a true passion for technological innovation and maintenance.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Message Section with Forum -->
+        <section class="section" id="message">
+            <div class="container">
+                <div class="columns">
+                    <!-- Get in Touch Column -->
+                    <div class="column is-one-third">
+                        <h2 class="title is-2">Get in Touch</h2>
+                        <div class="box">
+                            <form action="mailto:lpcooper@gmail.com" method="post" enctype="text/plain">
+                                <div class="field">
+                                    <label class="label">Name</label>
+                                    <div class="control">
+                                        <input class="input" type="text" name="name" placeholder="Your Name" required>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Email</label>
+                                    <div class="control">
+                                        <input class="input" type="email" name="email" placeholder="Your Email" required>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Message</label>
+                                    <div class="control">
+                                        <textarea class="textarea" name="message" placeholder="Your Message" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="control">
+                                        <button type="submit" class="button is-primary">Send Message</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Forum Column -->
+                    <div class="column">
+                        <h2 class="title is-2">Community Forum</h2>
+                        <div class="box">
+                            <!-- Post Form -->
+                            <div class="field">
+                                <label class="label">Your Name</label>
+                                <div class="control">
+                                    <input id="userName" class="input" type="text" placeholder="Enter your name">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label class="label">Share Your Thoughts</label>
+                                <div class="control">
+                                    <textarea id="forumMessage" class="textarea" placeholder="Write your message here..."></textarea>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="control">
+                                    <button onclick="postMessage()" class="button is-info">Post Message</button>
+                                </div>
+                            </div>
+
+                            <!-- Messages Container -->
+                            <div id="forumMessages" class="mt-4">
+                                <!-- Messages will be added here dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', loadMessages);
+
+            function loadMessages() {
+                const messages = JSON.parse(localStorage.getItem('forumMessages') || '[]');
+                const messagesContainer = document.getElementById('forumMessages');
+                messagesContainer.innerHTML = '';
+                messages.forEach(message => {
+                    displayMessage(message);
+                });
+            }
+
+            function postMessage() {
+                const messageText = document.getElementById('forumMessage').value;
+                const userName = document.getElementById('userName').value || 'Anonymous';
+                if (!messageText.trim()) return;
+
+                const message = {
+                    text: messageText,
+                    author: userName,
+                    date: new Date().toLocaleString(),
+                    likes: 0,
+                    dislikes: 0,
+                    comments: [],
+                    id: Date.now()
+                };
+
+                const messages = JSON.parse(localStorage.getItem('forumMessages') || '[]');
+                messages.unshift(message);
+                localStorage.setItem('forumMessages', JSON.stringify(messages));
+
+                displayMessage(message);
+                document.getElementById('forumMessage').value = '';
+            }
+
+            function displayMessage(message) {
+                const messagesContainer = document.getElementById('forumMessages');
+                const messageElement = document.createElement('article');
+                messageElement.className = 'message mt-4';
+                messageElement.innerHTML = `
+                    <div class="message-header">
+                        <p>${message.author}</p>
+                        <p class="is-size-7">${message.date}</p>
+                        <button class="delete" aria-label="delete"></button>
+                    </div>
+                    <div class="message-body">
+                        ${message.text}
+                    </div>
+                    <div class="message-footer mt-2">
+                        <div class="buttons are-small">
+                            <button class="button is-primary like-button">
+                                <span class="icon"><i class="fas fa-thumbs-up"></i></span>
+                                <span class="like-count">${message.likes}</span>
+                            </button>
+                            <button class="button is-danger dislike-button">
+                                <span class="icon"><i class="fas fa-thumbs-down"></i></span>
+                                <span class="dislike-count">${message.dislikes}</span>
+                            </button>
+                        </div>
+                        <div class="comment-section mt-2">
+                            <div class="comments-container"></div>
+                            <div class="field has-addons">
+                                <div class="control is-expanded">
+                                    <input class="input is-small comment-input" type="text" placeholder="Add a comment...">
+                                </div>
+                                <div class="control">
+                                    <button class="button is-small is-info comment-button">Comment</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                messagesContainer.insertBefore(messageElement, messagesContainer.firstChild);
+
+                // Comments display
+                const commentsContainer = messageElement.querySelector('.comments-container');
+                message.comments.forEach(comment => {
+                    const commentElement = document.createElement('div');
+                    commentElement.className = 'box is-small mt-2';
+                    commentElement.innerHTML = `<strong>${comment.author}:</strong> ${comment.text}`;
+                    commentsContainer.appendChild(commentElement);
+                });
+
+                // Add comment functionality
+                const commentButton = messageElement.querySelector('.comment-button');
+                const commentInput = messageElement.querySelector('.comment-input');
+                commentButton.addEventListener('click', function() {
+                    const commentText = commentInput.value.trim();
+                    const userName = document.getElementById('userName').value || 'Anonymous';
+                    if (commentText) {
+                        const comment = { author: userName, text: commentText };
+                        const messages = JSON.parse(localStorage.getItem('forumMessages') || '[]');
+                        const messageIndex = messages.findIndex(m => m.id === message.id);
+                        if (messageIndex > -1) {
+                            messages[messageIndex].comments.push(comment);
+                            localStorage.setItem('forumMessages', JSON.stringify(messages));
+                            
+                            const commentElement = document.createElement('div');
+                            commentElement.className = 'box is-small mt-2';
+                            commentElement.innerHTML = `<strong>${comment.author}:</strong> ${comment.text}`;
+                            commentsContainer.appendChild(commentElement);
+                            commentInput.value = '';
+                        }
+                    }
+                });
+
+                // Like/Dislike functionality
+                const likeButton = messageElement.querySelector('.like-button');
+                const dislikeButton = messageElement.querySelector('.dislike-button');
+
+                likeButton.addEventListener('click', function() {
+                    updateReaction(message.id, 'likes');
+                });
+
+                dislikeButton.addEventListener('click', function() {
+                    updateReaction(message.id, 'dislikes');
+                });
+
+                // Delete functionality
+                const deleteButton = messageElement.querySelector('.delete');
+                deleteButton.addEventListener('click', function() {
+                    if (confirm('Are you sure you want to delete this message?')) {
+                        messageElement.remove();
+                        const messages = JSON.parse(localStorage.getItem('forumMessages') || '[]');
+                        const messageIndex = messages.findIndex(m => m.id === message.id);
+                        if (messageIndex > -1) {
+                            messages.splice(messageIndex, 1);
+                            localStorage.setItem('forumMessages', JSON.stringify(messages));
+                        }
+                    }
+                });
+            }
+
+            function updateReaction(messageId, type) {
+                const messages = JSON.parse(localStorage.getItem('forumMessages') || '[]');
+                const messageIndex = messages.findIndex(m => m.id === messageId);
+                if (messageIndex > -1) {
+                    messages[messageIndex][type]++;
+                    localStorage.setItem('forumMessages', JSON.stringify(messages));
+                    loadMessages(); // Refresh display
+                }
+            }
+        </script>
+
+        <!-- Message Board Section -->
+        <section class="section" id="updates">
+            <div class="container">
+                <h2 class="title is-2">Updates & News</h2>
+                <div class="box">
+                    <article class="message">
+                        <div class="message-header">
+                            <p>Latest Update - February 2025</p>
+                        </div>
+                        <div class="message-body">
+                            Welcome to my new website! Check back here for regular updates about my projects and career journey.
+                        </div>
+                        <div class="message-footer mt-2">
+                            <div class="buttons are-small">
+                                <button class="button is-primary like-button">
+                                    <span class="icon"><i class="fas fa-thumbs-up"></i></span>
+                                    <span class="like-count">0</span>
+                                    <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        const likeButtons = document.querySelectorAll('.like-button');
+                                        likeButtons.forEach(button => {
+                                            button.addEventListener('click', function() {
+                                                const countSpan = this.querySelector('.like-count');
+                                                let count = parseInt(countSpan.textContent);
+                                                countSpan.textContent = count + 1;
+                                            });
+                                        });
+                                    });
+                                    </script>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article class="message mt-4">
+                        <div class="message-header">
+                            <p>Project Announcement - January 2025</p>
+                        </div>
+                        <div class="message-body">
+                            Started working on a Software Engineering project involving API's! Stay tuned for more updates.
+                        </div>
+                        <div class="message-footer mt-2">
+                            <div class="buttons are-small">
+                                <button class="button is-primary like-button">
+                                    <span class="icon"><i class="fas fa-thumbs-up"></i></span>
+                                    <span class="like-count">0</span>
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function() {
+                                            const likeButtons = document.querySelectorAll('.like-button');
+                                            likeButtons.forEach(button => {
+                                                button.addEventListener('click', function() {
+                                                    const countSpan = this.querySelector('.like-count');
+                                                    let count = parseInt(countSpan.textContent);
+                                                    countSpan.textContent = count + 1;
+                                                });
+                                            });
+                                        });
+                                        </script>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="message mt-4">
+                        <div class="message-header">
+                            <p>Site Updates - February 21st, 2025</p>
+                        </div>
+                        <div class="message-body">
+                            Ive added a few new features to my site including 
+                        </div>
+                        <div class="message-footer mt-2">
+                            <div class="buttons are-small">
+                                <button class="button is-primary like-button">
+                                    <span class="icon"><i class="fas fa-thumbs-up"></i></span>
+                                    <span class="like-count">0</span>
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function() {
+                                            const likeButtons = document.querySelectorAll('.like-button');
+                                            likeButtons.forEach(button => {
+                                                button.addEventListener('click', function() {
+                                                    const countSpan = this.querySelector('.like-count');
+                                                    let count = parseInt(countSpan.textContent);
+                                                    countSpan.textContent = count + 1;
+                                                });
+                                            });
+                                        });
+                                        </script>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
                 </div>
             </div>
         </section>
